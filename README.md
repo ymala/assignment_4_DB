@@ -9,9 +9,11 @@ It has:
 Our raw data comes from 7 different sources. All data is for the period 01-Jan-2023 to 31-Dec-2024.
 
 ### How to set up the DB
-1) Execute a script from file "create_raw_tables.sql"
-2) Execute a Python script load_raw_data in your Python shell. **Do not forget to fill in your password in config var in the script.**
-3) Execute a script from file "refill_stg_tables.sql"
+1) Execute a script from file "data_generation.py" and you'll have csv generated
+2) Execute a script from file "create_raw_tables.sql"
+3) Execute a Python script "load_raw_data" in your Python shell  
+   **Don't forget to fill in your password in config var in the script and right path to the csv files.**
+5) Execute a script from file "refill_stg_tables.sql"
 
 ### Raw Data Sources (7 CSV files)
 
