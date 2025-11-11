@@ -150,22 +150,22 @@ This is the final dimensional model, optimized for BI tools.
 #### 1. Dimensions
 
 **`dim_date`**:
-    - A generated calendar table with one row per day.
-    - **Key:** `date_key` (e.g., 20230101)
+- A generated calendar table with one row per day.
+- **Key:** `date_key` (e.g., 20230101)
 
 **`dim_products`**:
-    - A clean, unique list of products from `stg_products`.
-    - **Key:** `product_key` (Surrogate Key)
+- A clean, unique list of products from `stg_products`.
+- **Key:** `product_key` (Surrogate Key)
 
 **`dim_stores`**:
-    - A clean, unique list of stores, including the '9999' Online store.
-    - **Key:** `store_key` (Surrogate Key)
+- A clean, unique list of stores, including the '9999' Online store.
+- **Key:** `store_key` (Surrogate Key)
 
 **`dim_customers`**:
-    - A historical directory of loyalty members.
-    - **Key:** `customer_key` (Surrogate Key)
-    - **Guest Record:** `customer_key = 0` is reserved for "Guest Customer" to handle `NULL` customer IDs from transactions.
-    - **SCD Type 2:** This table tracks history. When a customer's attribute (like `city`) changes:
+- A historical directory of loyalty members.
+- **Key:** `customer_key` (Surrogate Key)
+- **Guest Record:** `customer_key = 0` is reserved for "Guest Customer" to handle `NULL` customer IDs from transactions.
+- **SCD Type 2:** This table tracks history. When a customer's attribute (like `city`) changes:
         1.  The old record is "closed" (`is_current = FALSE`, `valid_to = [today]`).
         2.  A new record is inserted with the updated info (`is_current = TRUE`, `valid_from = [today]`).
         3.  This allows analysis based on the customer's city *at the time of the sale*.
@@ -173,10 +173,10 @@ This is the final dimensional model, optimized for BI tools.
 #### 2. Fact Table
 
 **`fct_sales`**:
-    - The central table, with one row per item sold per check.
-    - **Logic:** Translates business keys (like `product_id`, `store_id`) from `stg_transactions` into surrogate keys (like `product_key`, `store_key`) by joining the dimensions.
-    - **SCD2 Join Logic:** The JOIN to `dim_customers` is using `... AND stg.datetime BETWEEN dim.valid_from AND dim.valid_to` to link the sale to the correct historical version of the customer.
-    - **Metrics:** Stores all key measures: `quantity`, `unit_price`, `total_amount`, and `discount_abs`.
+- The central table, with one row per item sold per check.
+  - **Logic:** Translates business keys (like `product_id`, `store_id`) from `stg_transactions` into surrogate keys (like `product_key`, `store_key`) by joining the dimensions.
+  - **SCD2 Join Logic:** The JOIN to `dim_customers` is using `... AND stg.datetime BETWEEN dim.valid_from AND dim.valid_to` to link the sale to the correct historical version of the customer.
+  - **Metrics:** Stores all key measures: `quantity`, `unit_price`, `total_amount`, and `discount_abs`.
 
 ---
 
