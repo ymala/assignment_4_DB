@@ -13,7 +13,12 @@ Our raw data comes from 7 different sources. All data is for the period 01-Jan-2
 2) Execute a script from file "create_raw_tables.sql"
 3) Execute a Python script "load_raw_data" in your Python shell  
    **Don't forget to fill in your password in config var in the script and right path to the csv files.**
-5) Execute a script from file "refill_stg_tables.sql"
+4) Execute a script from file "refill_stg_tables.sql"
+5) Execute a script from file "create_dim_tables.sql"
+6) Execute a Python script "populate_dims.py"
+  **Don't forget to fill in your password in config var in the script and right path to the csv files.**
+7) Execute a script from file "create_fct_tables.sql"
+8) (Only for further changes) Execute a script from file "update_dim_customers_scd2.sql"
 
 ### Raw Data Sources (7 CSV files)
 
