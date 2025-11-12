@@ -188,3 +188,56 @@ This is the final dimensional model, optimized for BI tools.
 ### Known Issues & Notes
 
 * **Promo Data:** The `discount_pct` in `stg_transactions` was found to be disconnected from the `stg_promo` data. To avoid invalid analytics, the **`dim_promo` has been intentionally excluded** from this model iteration. The model is ready to add this dimension later when the stage-layer data is corrected.
+
+---
+
+## Data Lineage Graph
+
+This graph shows the flow of data from the `raw` sources, through the `stage` cleaning layer, and into the final `mart` (Star Schema) tables.
+
+```mermaid
+graph TD
+    subgraph Raw Layer
+        R1(raw_check_summary)
+        R2(raw_check_details)
+        R3(raw_products)
+        R4(raw_stores)
+        R5(raw_customers)
+        R6(raw_pricing)
+        R7(raw_promo)
+    end
+
+    subgraph Stage Layer
+        S1(stg_transactions)
+        S2(stg_products)
+        S3(stg_stores)
+        S4(stg_customers)
+        S5(stg_pricing)
+        S6(stg_promo)
+    end
+
+    subgraph Mart Layer
+        D1(dim_date)
+        D2(dim_products)
+        D3(dim_stores)
+        D4(dim_customers)
+        F1(fct_sales)
+    end
+
+    R1 & R2 --> S1
+    R3 --> S2
+    R4 --> S3
+    R5 --> S4
+    R6 --> S5
+    R7 --> S6 
+
+    S5 --> S2(stg_products)
+
+    S1 --> F1
+    S2 --> D2
+    S3 --> D3
+    S4 --> D4
+    S1 --> D1(dim_date)
+
+    D1 & D2 & D3 & D4 --> F1
+
